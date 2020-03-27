@@ -24,7 +24,8 @@
            @"剪切寄宿图",
            @"局部拉伸寄宿图",
            @"使用Core Graphics绘制寄宿图",
-           @"使用一张图制作时钟"];
+           @"使用一张图制作时钟",
+           @"通过Z坐标轴改变图层显示顺序"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }
