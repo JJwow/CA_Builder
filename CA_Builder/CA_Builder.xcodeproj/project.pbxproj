@@ -18,6 +18,10 @@
 		84516AE8242E2BF900A52136 /* CA_BuilderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516AE7242E2BF900A52136 /* CA_BuilderUITests.m */; };
 		84516AF8242E2C3000A52136 /* CoreAnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516AF6242E2C3000A52136 /* CoreAnimationViewController.m */; };
 		84516AF9242E2C3000A52136 /* CoreAnimationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84516AF7242E2C3000A52136 /* CoreAnimationViewController.xib */; };
+		84516AFE242E2E9100A52136 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 84516AFA242E2E9000A52136 /* 1.png */; };
+		84516AFF242E2E9100A52136 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 84516AFB242E2E9000A52136 /* 2.png */; };
+		84516B00242E2E9100A52136 /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 84516AFC242E2E9000A52136 /* 3.png */; };
+		84516B01242E2E9100A52136 /* team.png in Resources */ = {isa = PBXBuildFile; fileRef = 84516AFD242E2E9000A52136 /* team.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +63,10 @@
 		84516AF5242E2C3000A52136 /* CoreAnimationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreAnimationViewController.h; sourceTree = "<group>"; };
 		84516AF6242E2C3000A52136 /* CoreAnimationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreAnimationViewController.m; sourceTree = "<group>"; };
 		84516AF7242E2C3000A52136 /* CoreAnimationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoreAnimationViewController.xib; sourceTree = "<group>"; };
+		84516AFA242E2E9000A52136 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
+		84516AFB242E2E9000A52136 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
+		84516AFC242E2E9000A52136 /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
+		84516AFD242E2E9000A52136 /* team.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = team.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +117,7 @@
 		84516ABF242E2BF700A52136 /* CA_Builder */ = {
 			isa = PBXGroup;
 			children = (
+				84516B02242E2E9700A52136 /* Image */,
 				84516AC0242E2BF700A52136 /* AppDelegate.h */,
 				84516AC1242E2BF700A52136 /* AppDelegate.m */,
 				84516AC3242E2BF700A52136 /* SceneDelegate.h */,
@@ -143,6 +152,17 @@
 				84516AE9242E2BF900A52136 /* Info.plist */,
 			);
 			path = CA_BuilderUITests;
+			sourceTree = "<group>";
+		};
+		84516B02242E2E9700A52136 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				84516AFA242E2E9000A52136 /* 1.png */,
+				84516AFB242E2E9000A52136 /* 2.png */,
+				84516AFC242E2E9000A52136 /* 3.png */,
+				84516AFD242E2E9000A52136 /* team.png */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,10 +268,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84516AFF242E2E9100A52136 /* 2.png in Resources */,
 				84516AF9242E2C3000A52136 /* CoreAnimationViewController.xib in Resources */,
+				84516B01242E2E9100A52136 /* team.png in Resources */,
 				84516AD0242E2BF800A52136 /* LaunchScreen.storyboard in Resources */,
 				84516ACD242E2BF800A52136 /* Assets.xcassets in Resources */,
 				84516ACB242E2BF700A52136 /* Main.storyboard in Resources */,
+				84516B00242E2E9100A52136 /* 3.png in Resources */,
+				84516AFE242E2E9100A52136 /* 1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
