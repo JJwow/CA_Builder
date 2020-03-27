@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
-@interface CoreAnimationViewController ()
+@interface CoreAnimationViewController ()<CALayerDelegate>
 
 @end
 
@@ -31,6 +31,9 @@
         case 3:
             [self stretchableImage];
         break;
+        case 4:
+            [self createContentsByCoreGraphics];
+        break;
         default:
             break;
     }
@@ -38,8 +41,8 @@
 }
 
 /*
- 使用CALayer绘制简单图层
-*/
+ *使用CALayer绘制简单图层
+ */
 - (void)setBaseCALayer{
     CALayer *blueLayer = [CALayer layer];
     blueLayer.frame = CGRectMake(50.0f, 50.0f, 100.0f, 100.0f);
@@ -48,8 +51,8 @@
 }
 
 /*
- 使用CALayer寄宿图
-*/
+ *使用CALayer寄宿图
+ */
 - (void)setContents{
     CALayer *blueLayer = [CALayer layer];
     blueLayer.frame = CGRectMake(Screen_Width/2 - 100.0f, 50.0f, 200.0f, 200.0f);
@@ -72,8 +75,8 @@
 }
 
 /*
- 剪切image
-*/
+ *剪切image
+ */
 - (void)contentsRectImage{
     CALayer *blueLayer = [CALayer layer];
     blueLayer.frame = CGRectMake(Screen_Width/2 - 100.0f, 50.0f, 200.0f, 200.0f);
@@ -93,9 +96,9 @@
 }
 
 /*
- 剪切image部分内容
- contentsRect不是按点来计算的，它使用了单位坐标，单位坐标指定在0到1之间，是一个相对值（像素和点就是绝对值）。所以他们是相对与寄宿图的尺寸的。
-*/
+ *剪切image部分内容
+ *contentsRect不是按点来计算的，它使用了单位坐标，单位坐标指定在0到1之间，是一个相对值（像素和点就是绝对值）。所以他们是相对与寄宿图的尺寸的。
+ */
 - (void)contentsRectSubView:(UIImage *)img withContentRect:(CGRect)rect toLayerFrame:(CGRect)frame{
     CALayer *layer = [CALayer layer];
     layer.frame = frame;
@@ -106,7 +109,8 @@
 }
 
 
-/*拉伸图片
+/*
+ *拉伸图片
  */
 - (void)stretchableImage{
     CALayer *blueLayer = [CALayer layer];
@@ -136,4 +140,27 @@
     layer.contentsCenter = rect;
 }
 
+/*
+ *使用Core Graphics绘制寄宿图
+ 我们在blueLayer上显式地调用了-display。不同于UIView，当图层显示在屏幕上时，CALayer不会自动重绘它的内容。它把重绘的决定权交给了开发者
+ 尽管我们没有用masksToBounds属性，绘制的那个圆仍然沿边界被裁剪了。这是因为当你使用CALayerDelegate绘制寄宿图的时候，并没有对超出边界外的内容提供绘制支持。
+ */
+- (void)createContentsByCoreGraphics{
+    CALayer *blueLayer = [CALayer layer];
+    blueLayer.frame = CGRectMake(Screen_Width/2 - 100.0f, 50.0f, 200.0f, 200.0f);
+    blueLayer.backgroundColor = [UIColor blueColor].CGColor;
+    blueLayer.delegate = self;
+    blueLayer.contentsScale = [UIScreen mainScreen].scale;
+    [self.view.layer addSublayer:blueLayer];
+    [blueLayer display];
+}
+
+/*
+ *在调用这个方法之前，CALayer创建了一个合适尺寸的空寄宿图（尺寸由bounds和contentsScale决定）和一个Core Graphics的绘制上下文环境，为绘制寄宿图做准备，他作为ctx参数传入
+ */
+-(void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx{
+    CGContextSetLineWidth(ctx, 10.0f);
+    CGContextSetStrokeColorWithColor(ctx, [UIColor redColor].CGColor);
+    CGContextStrokeEllipseInRect(ctx, layer.bounds);
+}
 @end
