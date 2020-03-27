@@ -18,7 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    arr =@[@"添加蓝色CALayer",@"添加寄宿图"];
+    arr =@[@"添加蓝色CALayer",@"显示寄宿图",@"剪切寄宿图",@"局部拉伸寄宿图"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }

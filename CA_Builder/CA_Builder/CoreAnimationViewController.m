@@ -9,7 +9,7 @@
 #import "CoreAnimationViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
-#define Screen_Width [UIScreen mainScreen].bounds.size.WIdth
+#define Screen_Width [UIScreen mainScreen].bounds.size.width
 @interface CoreAnimationViewController ()
 
 @end
@@ -21,10 +21,16 @@
     switch (self.type) {
         case 0:
             [self setBaseCALayer];
-            break;
-         case 1:
+        break;
+        case 1:
             [self setContents];
-            break;
+        break;
+        case 2:
+            [self contentsRectImage];
+        break;
+        case 3:
+            [self stretchableImage];
+        break;
         default:
             break;
     }
@@ -46,7 +52,7 @@
 */
 - (void)setContents{
     CALayer *blueLayer = [CALayer layer];
-    blueLayer.frame = CGRectMake(50.0f, 50.0f, 200.0f, 200.0f);
+    blueLayer.frame = CGRectMake(Screen_Width/2 - 100.0f, 50.0f, 200.0f, 200.0f);
     UIImage *img = [UIImage imageNamed:@"team.png"];
     blueLayer.contents = (__bridge id)img.CGImage;
     
@@ -61,12 +67,28 @@
     
     //不显示超出边界的内容，同UIView的clipsToBounds
 //    blueLayer.masksToBounds = YES;
+        
+    [self.view.layer addSublayer:blueLayer];
+}
+
+/*
+ 剪切image
+*/
+- (void)contentsRectImage{
+    CALayer *blueLayer = [CALayer layer];
+    blueLayer.frame = CGRectMake(Screen_Width/2 - 100.0f, 50.0f, 200.0f, 200.0f);
+    UIImage *img = [UIImage imageNamed:@"team.png"];
+    blueLayer.contents = (__bridge id)img.CGImage;
+    
+    //设置内容的显示方式为适应
+    blueLayer.contentsGravity = kCAGravityResizeAspect;
     
     //将img切成四张
-    [self contentsRectSubView:img withContentRect:CGRectMake(0, 0, 0.5, 0.5) toLayerFrame:CGRectMake(0, Screen_Height - 300, 100, 100)];
-    [self contentsRectSubView:img withContentRect:CGRectMake(0.5, 0, 0.5, 0.5) toLayerFrame:CGRectMake(200, Screen_Height - 300, 100, 100)];
-    [self contentsRectSubView:img withContentRect:CGRectMake(0, 0.5, 0.5, 0.5) toLayerFrame:CGRectMake(0, Screen_Height - 100, 100, 100)];
-    [self contentsRectSubView:img withContentRect:CGRectMake(0.5, 0.5, 0.5, 0.5) toLayerFrame:CGRectMake(200, Screen_Height - 100, 100, 100)];
+    [self contentsRectSubView:img withContentRect:CGRectMake(0, 0, 0.5, 0.5) toLayerFrame:CGRectMake(50, 300, 100, 100)];
+    [self contentsRectSubView:img withContentRect:CGRectMake(0.5, 0, 0.5, 0.5) toLayerFrame:CGRectMake(200, 300, 100, 100)];
+    [self contentsRectSubView:img withContentRect:CGRectMake(0, 0.5, 0.5, 0.5) toLayerFrame:CGRectMake(50, 450, 100, 100)];
+    [self contentsRectSubView:img withContentRect:CGRectMake(0.5, 0.5, 0.5, 0.5) toLayerFrame:CGRectMake(200, 450, 100, 100)];
+    
     [self.view.layer addSublayer:blueLayer];
 }
 
@@ -81,6 +103,37 @@
     layer.contents = (__bridge id)img.CGImage;
     layer.contentsGravity = kCAGravityResizeAspect;
     layer.contentsRect = rect;
+}
+
+
+/*拉伸图片
+ */
+- (void)stretchableImage{
+    CALayer *blueLayer = [CALayer layer];
+    blueLayer.frame = CGRectMake(Screen_Width/2 - 100.0f, 50.0f, 200.0f, 200.0f);
+    UIImage *img = [UIImage imageNamed:@"team.png"];
+    blueLayer.contents = (__bridge id)img.CGImage;
+    
+    //设置内容的显示方式为适应
+    blueLayer.contentsGravity = kCAGravityResizeAspect;
+    
+    [self.view.layer addSublayer:blueLayer];
+    
+    //尽量保留左边2个张伟
+    [self stretchableImageSubView:img withContentRect:CGRectMake(0.3, 0, 1, 1) toLayerFrame:CGRectMake(Screen_Width/2 - 100.0f, 300.0f, 100, 100)];
+    //尽量保留右边2个张伟
+    [self stretchableImageSubView:img withContentRect:CGRectMake(0, 0, 0.7, 1) toLayerFrame:CGRectMake(Screen_Width/2 - 100.0f, 450.0f, 100, 100)];
+}
+
+/*
+ 拉伸image内容
+*/
+- (void)stretchableImageSubView:(UIImage *)img withContentRect:(CGRect)rect toLayerFrame:(CGRect)frame{
+    CALayer *layer = [CALayer layer];
+    layer.frame = frame;
+    [self.view.layer addSublayer:layer];
+    layer.contents = (__bridge id)img.CGImage;
+    layer.contentsCenter = rect;
 }
 
 @end
