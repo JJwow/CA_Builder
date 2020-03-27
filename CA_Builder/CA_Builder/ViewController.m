@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "CoreAnimationViewController.h"
+#import "ClockViewController.h"
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     NSArray *arr;
@@ -22,7 +23,8 @@
            @"显示寄宿图",
            @"剪切寄宿图",
            @"局部拉伸寄宿图",
-           @"使用Core Graphics绘制寄宿图"];
+           @"使用Core Graphics绘制寄宿图",
+           @"使用一张图制作时钟"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }
@@ -42,9 +44,23 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    CoreAnimationViewController *vc = [[CoreAnimationViewController alloc]initWithNibName:@"CoreAnimationViewController" bundle:nil];
-    vc.type = indexPath.row;
-    [self presentViewController:vc animated:YES completion:nil];
+    switch (indexPath.row) {
+        case 5:
+        {
+            ClockViewController *vc = [[ClockViewController alloc]initWithNibName:@"ClockViewController" bundle:nil];
+            [self presentViewController:vc animated:YES completion:nil];
+        }
+            break;
+            
+        default:
+        {
+            CoreAnimationViewController *vc = [[CoreAnimationViewController alloc]initWithNibName:@"CoreAnimationViewController" bundle:nil];
+            vc.type = indexPath.row;
+            [self presentViewController:vc animated:YES completion:nil];
+        }
+            break;
+    }
+    
 }
 
 @end

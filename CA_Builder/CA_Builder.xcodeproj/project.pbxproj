@@ -22,6 +22,9 @@
 		84516AFF242E2E9100A52136 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 84516AFB242E2E9000A52136 /* 2.png */; };
 		84516B00242E2E9100A52136 /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 84516AFC242E2E9000A52136 /* 3.png */; };
 		84516B01242E2E9100A52136 /* team.png in Resources */ = {isa = PBXBuildFile; fileRef = 84516AFD242E2E9000A52136 /* team.png */; };
+		84516B08242E414C00A52136 /* ClockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B06242E414C00A52136 /* ClockViewController.m */; };
+		84516B09242E414C00A52136 /* ClockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84516B07242E414C00A52136 /* ClockViewController.xib */; };
+		84516B0B242E499D00A52136 /* biaopan.png in Resources */ = {isa = PBXBuildFile; fileRef = 84516B0A242E499D00A52136 /* biaopan.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +70,10 @@
 		84516AFB242E2E9000A52136 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
 		84516AFC242E2E9000A52136 /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
 		84516AFD242E2E9000A52136 /* team.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = team.png; sourceTree = "<group>"; };
+		84516B05242E414C00A52136 /* ClockViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClockViewController.h; sourceTree = "<group>"; };
+		84516B06242E414C00A52136 /* ClockViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClockViewController.m; sourceTree = "<group>"; };
+		84516B07242E414C00A52136 /* ClockViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClockViewController.xib; sourceTree = "<group>"; };
+		84516B0A242E499D00A52136 /* biaopan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biaopan.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +139,9 @@
 				84516AF5242E2C3000A52136 /* CoreAnimationViewController.h */,
 				84516AF6242E2C3000A52136 /* CoreAnimationViewController.m */,
 				84516AF7242E2C3000A52136 /* CoreAnimationViewController.xib */,
+				84516B05242E414C00A52136 /* ClockViewController.h */,
+				84516B06242E414C00A52136 /* ClockViewController.m */,
+				84516B07242E414C00A52136 /* ClockViewController.xib */,
 			);
 			path = CA_Builder;
 			sourceTree = "<group>";
@@ -157,6 +167,7 @@
 		84516B02242E2E9700A52136 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				84516B0A242E499D00A52136 /* biaopan.png */,
 				84516AFA242E2E9000A52136 /* 1.png */,
 				84516AFB242E2E9000A52136 /* 2.png */,
 				84516AFC242E2E9000A52136 /* 3.png */,
@@ -270,11 +281,13 @@
 			files = (
 				84516AFF242E2E9100A52136 /* 2.png in Resources */,
 				84516AF9242E2C3000A52136 /* CoreAnimationViewController.xib in Resources */,
+				84516B09242E414C00A52136 /* ClockViewController.xib in Resources */,
 				84516B01242E2E9100A52136 /* team.png in Resources */,
 				84516AD0242E2BF800A52136 /* LaunchScreen.storyboard in Resources */,
 				84516ACD242E2BF800A52136 /* Assets.xcassets in Resources */,
 				84516ACB242E2BF700A52136 /* Main.storyboard in Resources */,
 				84516B00242E2E9100A52136 /* 3.png in Resources */,
+				84516B0B242E499D00A52136 /* biaopan.png in Resources */,
 				84516AFE242E2E9100A52136 /* 1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +316,7 @@
 				84516AC8242E2BF700A52136 /* ViewController.m in Sources */,
 				84516AC2242E2BF700A52136 /* AppDelegate.m in Sources */,
 				84516AF8242E2C3000A52136 /* CoreAnimationViewController.m in Sources */,
+				84516B08242E414C00A52136 /* ClockViewController.m in Sources */,
 				84516AD3242E2BF800A52136 /* main.m in Sources */,
 				84516AC5242E2BF700A52136 /* SceneDelegate.m in Sources */,
 			);
