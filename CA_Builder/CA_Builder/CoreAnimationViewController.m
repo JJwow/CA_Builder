@@ -8,8 +8,11 @@
 
 #import "CoreAnimationViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import <GLKit/GLKit.h>
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
+#define LIGHT_DIRECTION 0, 1, -0.5
+#define AMBIENT_LIGHT 0.5
 @interface CoreAnimationViewController ()<CALayerDelegate>
 
 @end
@@ -495,12 +498,35 @@
     [self configLayer:5 transform:transform];
 }
 - (void)configLayer:(NSInteger)index transform:(CATransform3D)transform{
-    CALayer *layer1 = [CALayer layer];
-    layer1.frame = CGRectMake(100, 100, 100, 100);
+    CALayer *layer = [CALayer layer];
+    layer.frame = CGRectMake(100, 100, 100, 100);
     UIImage *img = [UIImage imageNamed:@"team.png"];
-    layer1.contents = (__bridge id)img.CGImage;
-    [self.view.layer addSublayer:layer1];
-    layer1.transform = transform;
+    layer.contents = (__bridge id)img.CGImage;
+    [self.view.layer addSublayer:layer];
+    layer.transform = transform;
+    /*
+     *可以使用OpenGL为每个面增加光影
+     *Core Animation可以用3D显示图层，但是它对光线并没有概念。如果想让立方体看起来更加真实，需要自己做一个阴影效果。
+     *如果需要动态地创建光线效果，你可以根据每个视图的方向应用不同的alpha值做出半透明的阴影图层，但为了计算阴影图层的不透明度，你需要得到每个面的正太向量（垂直于表面的向量），然后根据一个想象的光源计算出两个向量叉乘结果。叉乘代表了光源和图层之间的角度，从而决定了它有多大程度上的光亮。
+     *我们用GLKit框架来做向量的计算（你需要引入GLKit库来运行代码），每个面的CATransform3D都被转换成GLKMatrix4，然后通过GLKMatrix4GetMatrix3函数得出一个3×3的旋转矩阵。这个旋转矩阵指定了图层的方向，然后可以用它来得到正太向量的值。
+     */
+    //GLKMatrix4和CATransform3D内存结构一致，但坐标类型有长度区别，所以理论上应该做一次float到CGFloat的转换
+    CALayer *shadowLayer = [CALayer layer];
+    shadowLayer.frame = layer.bounds;
+    [layer addSublayer:shadowLayer];
+    GLKMatrix4 matrix4 = *(GLKMatrix4 *)&transform;
+    GLKMatrix3 matrix3 = GLKMatrix4GetMatrix3(matrix4);
+    //get face normal
+    GLKVector3 normal = GLKVector3Make(0, 0, 1);
+    normal = GLKMatrix3MultiplyVector3(matrix3, normal);
+    normal = GLKVector3Normalize(normal);
+    //get dot product with light direction
+    GLKVector3 light = GLKVector3Normalize(GLKVector3Make(LIGHT_DIRECTION));
+    float dotProduct = GLKVector3DotProduct(light, normal);
+    //set lighting layer opacity
+    CGFloat shadow = 1 + dotProduct - AMBIENT_LIGHT;
+    UIColor *color = [UIColor colorWithWhite:0 alpha:shadow];
+    shadowLayer.backgroundColor = color.CGColor;
 }
 
 @end
