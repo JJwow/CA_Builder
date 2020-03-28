@@ -14,7 +14,9 @@
 #define LIGHT_DIRECTION 0, 1, -0.5
 #define AMBIENT_LIGHT 0.5
 @interface CoreAnimationViewController ()<CALayerDelegate>
-
+{
+    CALayer *solidLayer3;//固体第三个面的图层
+}
 @end
 
 @implementation CoreAnimationViewController
@@ -483,7 +485,7 @@
     //Y轴减少50，并沿着X轴旋转90度
     transform = CATransform3DMakeTranslation(0, -50, 0);
     transform = CATransform3DRotate(transform, M_PI_2, 1, 0, 0);
-    [self configLayer:2 transform:transform];
+    solidLayer3 = [self configLayer:2 transform:transform];
     //Y轴增加50，并沿着X轴反向旋转90度
     transform = CATransform3DMakeTranslation(0, 50, 0);
     transform = CATransform3DRotate(transform, -M_PI_2, 1, 0, 0);
@@ -496,8 +498,10 @@
     transform = CATransform3DMakeTranslation(0, 0, -50);
     transform = CATransform3DRotate(transform, M_PI, 0, 1, 0);
     [self configLayer:5 transform:transform];
+    
+    
 }
-- (void)configLayer:(NSInteger)index transform:(CATransform3D)transform{
+- (CALayer *)configLayer:(NSInteger)index transform:(CATransform3D)transform{
     CALayer *layer = [CALayer layer];
     layer.frame = CGRectMake(100, 100, 100, 100);
     UIImage *img = [UIImage imageNamed:@"team.png"];
@@ -511,22 +515,34 @@
      *我们用GLKit框架来做向量的计算（你需要引入GLKit库来运行代码），每个面的CATransform3D都被转换成GLKMatrix4，然后通过GLKMatrix4GetMatrix3函数得出一个3×3的旋转矩阵。这个旋转矩阵指定了图层的方向，然后可以用它来得到正太向量的值。
      */
     //GLKMatrix4和CATransform3D内存结构一致，但坐标类型有长度区别，所以理论上应该做一次float到CGFloat的转换
-    CALayer *shadowLayer = [CALayer layer];
-    shadowLayer.frame = layer.bounds;
-    [layer addSublayer:shadowLayer];
-    GLKMatrix4 matrix4 = *(GLKMatrix4 *)&transform;
-    GLKMatrix3 matrix3 = GLKMatrix4GetMatrix3(matrix4);
-    //get face normal
-    GLKVector3 normal = GLKVector3Make(0, 0, 1);
-    normal = GLKMatrix3MultiplyVector3(matrix3, normal);
-    normal = GLKVector3Normalize(normal);
-    //get dot product with light direction
-    GLKVector3 light = GLKVector3Normalize(GLKVector3Make(LIGHT_DIRECTION));
-    float dotProduct = GLKVector3DotProduct(light, normal);
-    //set lighting layer opacity
-    CGFloat shadow = 1 + dotProduct - AMBIENT_LIGHT;
-    UIColor *color = [UIColor colorWithWhite:0 alpha:shadow];
-    shadowLayer.backgroundColor = color.CGColor;
+//    CALayer *shadowLayer = [CALayer layer];
+//    shadowLayer.frame = layer.bounds;
+//    [layer addSublayer:shadowLayer];
+//    GLKMatrix4 matrix4 = *(GLKMatrix4 *)&transform;
+//    GLKMatrix3 matrix3 = GLKMatrix4GetMatrix3(matrix4);
+//    //get face normal
+//    GLKVector3 normal = GLKVector3Make(0, 0, 1);
+//    normal = GLKMatrix3MultiplyVector3(matrix3, normal);
+//    normal = GLKVector3Normalize(normal);
+//    //get dot product with light direction
+//    GLKVector3 light = GLKVector3Normalize(GLKVector3Make(LIGHT_DIRECTION));
+//    float dotProduct = GLKVector3DotProduct(light, normal);
+//    //set lighting layer opacity
+//    CGFloat shadow = 1 + dotProduct - AMBIENT_LIGHT;
+//    UIColor *color = [UIColor colorWithWhite:0 alpha:shadow];
+//    shadowLayer.backgroundColor = color.CGColor;
+    return layer;
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    /*
+     *判断d响应事件的对象
+     */
+    CGPoint point = [[touches anyObject] locationInView:self.view];
+    CALayer *layer = [self.view.layer hitTest:point];
+    if (layer == solidLayer3) {
+        NSLog(@"点击了固体图层的上面图层");
+    }
 }
 
 @end
