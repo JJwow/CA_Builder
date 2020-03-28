@@ -45,6 +45,9 @@
         case 10:
             [self setMask];
         break;
+        case 12:
+            [self setShouldRasterize];
+        break;
         default:
             break;
     }
@@ -281,5 +284,43 @@
     maskLayer.frame = grayLayer.bounds;
     maskLayer.contents = (__bridge id)[UIImage imageNamed:@"icn_i"].CGImage;
     grayLayer.mask = maskLayer;
+}
+
+/*
+ *组透明
+ *当你显示一个50%透明度的图层时，图层的每个像素都会一半显示自己的颜色，另一半显示图层下面的颜色。这是正常的透明度的表现。但是如果图层包含一个同样显示50%透明的子图层时，你所看到的视图，50%来自子视图，25%来了图层本身的颜色，另外的25%则来自背景色。
+ *
+ *你可以通过设置Info.plist文件中的UIViewGroupOpacity为YES来达到这个效果，但是这个设置会影响到这个应用，整个app可能会受到不良影响。
+ *当shouldRasterize和UIViewGroupOpacity一起的时候，会出现性能问题
+ */
+#warning 现在版本中默认实现了组透明
+- (void)setShouldRasterize{
+    /*
+     *如果你使用了shouldRasterize属性，你就要确保你设置了rasterizationScale属性去匹配屏幕，以防止出现Retina屏幕像素化的问题
+     */
+    self.view.layer.backgroundColor = [UIColor redColor].CGColor;
+    CALayer *bottomLayer1 = [CALayer layer];
+    bottomLayer1.frame = CGRectMake(50, 50, 100, 100);
+    bottomLayer1.backgroundColor = [UIColor greenColor].CGColor;
+    [self.view.layer addSublayer:bottomLayer1];
+    CALayer *topLayer1 = [CALayer layer];
+    topLayer1.frame = CGRectMake(25, 25, 50, 50);
+    topLayer1.backgroundColor = [UIColor greenColor].CGColor;
+    topLayer1.opacity = 0.5;
+    [bottomLayer1 addSublayer:topLayer1];
+    bottomLayer1.opacity = 0.5;
+    topLayer1.opacity = 0.5;
+//    bottomLayer1.shouldRasterize = YES;
+    
+    CALayer *bottomLayer2 = [CALayer layer];
+    bottomLayer2.frame = CGRectMake(200, 50, 100, 100);
+    bottomLayer2.backgroundColor = [UIColor greenColor].CGColor;
+    [self.view.layer addSublayer:bottomLayer2];
+    CALayer *topLayer2 = [CALayer layer];
+    topLayer2.frame = CGRectMake(25, 25, 50, 50);
+    topLayer2.backgroundColor = [UIColor greenColor].CGColor;
+    [bottomLayer2 addSublayer:topLayer2];
+    bottomLayer2.opacity = 0.5;
+    
 }
 @end
