@@ -10,6 +10,7 @@
 #import "CoreAnimationViewController.h"
 #import "ClockViewController.h"
 #import "LayerChangeZTouchViewController.h"
+#import "NumberClockViewController.h"
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     NSArray *arr;
@@ -30,7 +31,8 @@
            @"设置圆角",
            @"设置阴影",
            @"自定义阴影路径",
-           @"蒙层模版"];
+           @"蒙层模版",
+           @"拉伸过滤"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }
@@ -60,6 +62,12 @@
         case 6:
         {
             LayerChangeZTouchViewController *vc = [[LayerChangeZTouchViewController alloc]init];
+            [self presentViewController:vc animated:YES completion:nil];
+        }
+            break;
+        case 11:
+        {
+            NumberClockViewController *vc = [[NumberClockViewController alloc]init];
             [self presentViewController:vc animated:YES completion:nil];
         }
             break;
