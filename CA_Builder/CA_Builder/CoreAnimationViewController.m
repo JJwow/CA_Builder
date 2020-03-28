@@ -51,6 +51,12 @@
         case 13:
             [self affineTransform];
         break;
+        case 14:
+            [self transform3D];
+        break;
+        case 15:
+            [self transform3DWithAnchorPoint];
+        break;
         default:
             break;
     }
@@ -361,5 +367,55 @@
     CGAffineTransform transform = CGAffineTransformIdentity;
     transform.c = -1;//将图片向右倾斜45度，可以通过更改a\b\c\d进行不同的变换
     layer.affineTransform = transform;
+}
+
+/*
+ *3D变换
+ *和CGAffineTransform矩阵类似，Core Animation提供了一系列的方法用来创建和组合CATransform3D类型的矩阵，和Core Graphics的函数类似，但是3D的平移和旋转多处了一个z参数，并且旋转函数除了angle之外多出了x,y,z三个参数，分别决定了每个坐标轴方向上的旋转
+ */
+- (void)transform3D{
+    UIImage *img = [UIImage imageNamed:@"team.png"];
+    CALayer *layer = [CALayer layer];
+    layer.contents = (__bridge id)img.CGImage;
+    layer.frame = CGRectMake(50, 50, 100, 100);
+    [self.view.layer addSublayer:layer];
+    CATransform3D transform = CATransform3DIdentity;
+    /*
+     *CATransform3D的m34元素，用来做透视
+     *m34的默认值是0，我们可以通过设置m34为-1.0 / d来应用透视效果，d代表了想象中视角相机和屏幕之间的距离，以像素为单位
+     *通常500-1000就已经很好了,减少距离的值会增强透视效果
+     *一个非常微小的值会让它看起来更加失真，然而一个非常大的值会让它基本失去透视效果
+     */
+#warning transform.m34调用要在transform = CATransform3DRotate之前
+    transform.m34 = -1.0/500.0;
+    transform = CATransform3DRotate(transform, M_PI_4, 0, 1, 0);
+    layer.transform = transform;
+}
+
+/*
+ *灭点：当在透视角度绘图的时候，远离相机视角的物体将会变小变远，当远离到一个极限距离，它们可能就缩成了一个点，于是所有的物体最后都汇聚消失在同一个点。
+ *Core Animation定义了这个点位于变换图层的anchorPoint
+ *当改变一个图层的position，你也改变了它的灭点，做3D变换的时候要时刻记住这一点，当你视图通过调整m34来让它更加有3D效果，应该首先把它放置于屏幕中央，然后通过平移来把它移动到指定位置（而不是直接改变它的position），这样所有的3D图层都共享一个灭点。
+ *如果有多个视图或者图层，每个都做3D变换，那就需要分别设置相同的m34值，并且确保在变换之前都在屏幕中央共享同一个position
+ *sublayerTransform 是CATransform3D类型 它影响到所有的子图层。这意味着你可以一次性对包含这些图层的容器做变换，于是所有的子图层都自动继承了这个变换方法。
+ */
+#warning 使用sublayerTransform在进行3D变换时可以不用将其放在中心灭点,且能统一设置穿透数值
+- (void)transform3DWithAnchorPoint{
+    CATransform3D perspective = CATransform3DIdentity;
+    perspective.m34 = -1.0/500.0;
+    self.view.layer.sublayerTransform = perspective;
+    UIImage *img = [UIImage imageNamed:@"team.png"];
+    CALayer *layer1 = [CALayer layer];
+    layer1.contents = (__bridge id)img.CGImage;
+    layer1.frame = CGRectMake(50, 50, 100, 100);
+    CATransform3D transform1 = CATransform3DMakeRotation(M_PI_4, 0, 1, 0);
+    layer1.transform = transform1;
+    [self.view.layer addSublayer:layer1];
+    CALayer *layer2= [CALayer layer];
+    layer2.contents = (__bridge id)img.CGImage;
+    layer2.frame = CGRectMake(200, 50, 100, 100);
+    CATransform3D transform2 = CATransform3DMakeRotation(-M_PI_4, 0, 1, 0);
+    layer2.transform = transform2;
+    [self.view.layer addSublayer:layer2];
 }
 @end

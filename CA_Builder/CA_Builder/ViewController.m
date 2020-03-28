@@ -34,7 +34,9 @@
            @"蒙层模版",
            @"拉伸过滤",
            @"组透明",
-           @"仿射变换"];
+           @"仿射变换",
+           @"3D变换",
+           @"同一个layer下多子layer进行3D变换"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }
