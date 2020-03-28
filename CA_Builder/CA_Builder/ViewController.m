@@ -33,7 +33,8 @@
            @"自定义阴影路径",
            @"蒙层模版",
            @"拉伸过滤",
-           @"组透明"];
+           @"组透明",
+           @"仿射变换"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }

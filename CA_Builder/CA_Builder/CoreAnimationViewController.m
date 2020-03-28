@@ -48,6 +48,9 @@
         case 12:
             [self setShouldRasterize];
         break;
+        case 13:
+            [self affineTransform];
+        break;
         default:
             break;
     }
@@ -322,5 +325,41 @@
     [bottomLayer2 addSublayer:topLayer2];
     bottomLayer2.opacity = 0.5;
     
+}
+
+/*
+ *仿射变换
+ */
+- (void)affineTransform{
+    UIImage *img = [UIImage imageNamed:@"team.png"];
+    CALayer *layer = [CALayer layer];
+    layer.contents = (__bridge id)img.CGImage;
+    layer.frame = CGRectMake(50, 50, 100, 100);
+    [self.view.layer addSublayer:layer];
+    /*
+     *单种仿射变换
+     *CGAffineTransformMakeRotation(CGFloat angle) 旋转
+     *CGAffineTransformMakeScale(CGFloat sx, CGFloat sy) 缩放
+     *CGAffineTransformMakeTranslation(CGFloat tx, CGFloat ty) 位移
+     */
+//    CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI_4);
+//    layer.affineTransform = transform;
+    
+    /*
+     *混合仿射变换
+     *图片向右边发生了平移，但并没有指定距离那么远（200像素），另外它还有点向下发生了平移。原因在于当你按顺序做了变换，上一个变换的结果将会影响之后的变换，所以200像素的向右平移同样也被旋转了30度，缩小了50%，所以它实际上是斜向移动了100像素。
+     */
+//    CGAffineTransform transform = CGAffineTransformIdentity;
+//    transform = CGAffineTransformScale(transform, 0.5, 0.5);
+//    transform = CGAffineTransformRotate(transform, M_PI_4);
+//    transform = CGAffineTransformTranslate(transform, 200, 0);
+//    layer.affineTransform = transform;
+    
+    /*
+     *斜切变换
+     */
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    transform.c = -1;//将图片向右倾斜45度，可以通过更改a\b\c\d进行不同的变换
+    layer.affineTransform = transform;
 }
 @end
