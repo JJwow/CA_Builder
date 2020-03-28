@@ -27,7 +27,10 @@
            @"使用Core Graphics绘制寄宿图",
            @"使用一张图制作时钟",
            @"通过Z坐标轴改变图层显示顺序",
-           @"设置圆角"];
+           @"设置圆角",
+           @"设置阴影",
+           @"自定义阴影路径",
+           @"蒙层模版"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }

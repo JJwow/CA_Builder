@@ -37,6 +37,14 @@
         case 7:
             [self setCornerRadius];
         break;
+        case 8:
+            [self setShadow];
+        case 9:
+            [self setShadowPath];
+        break;
+        case 10:
+            [self setMask];
+        break;
         default:
             break;
     }
@@ -188,5 +196,90 @@
     [blueLayer addSublayer:redLayer];
 }
 
+/*
+ *阴影添加
+ */
+- (void)setShadow{
+    CALayer *grayLayer = [CALayer layer];
+    grayLayer.frame = CGRectMake(50, 50, 200, 200);
+    grayLayer.backgroundColor = [UIColor grayColor].CGColor;
+    [self.view.layer addSublayer:grayLayer];
+    CALayer *whiteLayer = [CALayer layer];
+    whiteLayer.frame = CGRectMake(50, 50, 100, 100);
+    whiteLayer.backgroundColor = [UIColor whiteColor].CGColor;
+    /*
+     *shadowOffset属性控制着阴影的方向和距离。它是一个CGSize的值，宽度控制这阴影横向的位移，高度控制着纵向的位移。shadowOffset的默认值是 {0, -3}，意即阴影相对于Y轴有3个点的向上位移。
+     */
+    whiteLayer.shadowOffset = CGSizeMake(0, 10);
+    /*
+     *shadowRadius属性控制着阴影的模糊度，当它的值是0的时候，阴影就和视图一样有一个非常确定的边界线。当值越来越大的时候，边界线看上去就会越来越模糊和自然
+     */
+    whiteLayer.shadowRadius = 10;
+    /*
+     *给shadowOpacity属性一个大于默认值（也就是0）的值，阴影就可以显示在任意图层之下。shadowOpacity是一个必须在0.0（不可见）和1.0（完全不透明）之间的浮点数。如果设置为1.0，将会显示一个有轻微模糊的黑色阴影稍微在图层之上。
+     */
+    whiteLayer.shadowOpacity = 1;
+    whiteLayer.shadowColor = [UIColor redColor].CGColor;
+    [grayLayer addSublayer:whiteLayer];
+    /*
+     *和图层边框不同，图层的阴影继承自内容的外形，而不是根据边界和角半径来确定。为了计算出阴影的形状，Core Animation会将寄宿图（包括子视图，如果有的话）考虑在内，然后通过这些来完美搭配图层形状从而创建一个阴影
+     */
+    CALayer *whiteLayer1 = [CALayer layer];
+    whiteLayer1.frame = CGRectMake(-25, 25, 150, 50);
+    whiteLayer1.backgroundColor = [UIColor whiteColor].CGColor;
+    [whiteLayer addSublayer:whiteLayer1];
+}
 
+/*
+ *图层阴影并不总是方的，而是从图层内容的形状继承而来。
+ *实时计算阴影也是一个非常消耗资源的，尤其是图层有多个子图层，每个图层还有一个有透明效果的寄宿图的时候。
+ *如果你事先知道你的阴影形状会是什么样子的，你可以通过指定一个shadowPath来提高性能。
+ *
+ *但是如果是更加复杂一点的图形，UIBezierPath类会更合适，它是一个由UIKit提供的在CGPath基础上的Objective-C包装类
+ */
+- (void)setShadowPath{
+    CALayer *grayLayer = [CALayer layer];
+    grayLayer.frame = CGRectMake(50, 50, 200, 200);
+    grayLayer.backgroundColor = [UIColor grayColor].CGColor;
+    [self.view.layer addSublayer:grayLayer];
+    CALayer *whiteLayer = [CALayer layer];
+    whiteLayer.frame = CGRectMake(50, 50, 100, 100);
+    whiteLayer.backgroundColor = [UIColor whiteColor].CGColor;
+    whiteLayer.shadowOpacity = 1;
+    whiteLayer.shadowColor = [UIColor redColor].CGColor;
+    [grayLayer addSublayer:whiteLayer];
+    /*
+    *CGPath是一个Core Graphics对象，用来指定任意的一个矢量图形。我们可以通过这个属性单独于图层形状之外指定阴影的形状。
+    */
+    CGMutablePathRef squarepath = CGPathCreateMutable();
+    /*
+     *添加layer范围的阴影
+     */
+//    CGPathAddRect(squarepath, NULL, whiteLayer.bounds);
+    /*
+     *添加以layer为直径的阴影
+     */
+    CGPathAddEllipseInRect(squarepath, NULL, whiteLayer.bounds);
+    whiteLayer.shadowPath = squarepath;
+}
+
+/*
+ *图层模版
+ *使用一个32位有alpha通道的png图片通常是创建一个无矩形视图最方便的方法
+ *通过masksToBounds属性，我们可以沿边界裁剪图形；
+ *通过cornerRadius属性，我们还可以设定一个圆角。但是有时候你希望展现的内容不是在一个矩形或圆角矩形。
+ *mask本身就是个CALayer类型，有和其他图层一样的绘制和布局属性。
+ *它类似于一个子图层，相对于父图层（即拥有该属性的图层）布局，但是它却不是一个普通的子图层。
+ *mask图层定义了父图层的部分可见区域。
+ */
+- (void)setMask{
+    CALayer *grayLayer = [CALayer layer];
+    grayLayer.frame = CGRectMake(50, 50, 200, 200);
+    grayLayer.backgroundColor = [UIColor grayColor].CGColor;
+    [self.view.layer addSublayer:grayLayer];
+    CALayer *maskLayer = [CALayer layer];
+    maskLayer.frame = grayLayer.bounds;
+    maskLayer.contents = (__bridge id)[UIImage imageNamed:@"icn_i"].CGImage;
+    grayLayer.mask = maskLayer;
+}
 @end
