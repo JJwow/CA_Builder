@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "CoreAnimationViewController.h"
 #import "ClockViewController.h"
+#import "LayerChangeZTouchViewController.h"
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     NSArray *arr;
@@ -49,6 +50,12 @@
         case 5:
         {
             ClockViewController *vc = [[ClockViewController alloc]initWithNibName:@"ClockViewController" bundle:nil];
+            [self presentViewController:vc animated:YES completion:nil];
+        }
+            break;
+        case 6:
+        {
+            LayerChangeZTouchViewController *vc = [[LayerChangeZTouchViewController alloc]init];
             [self presentViewController:vc animated:YES completion:nil];
         }
             break;

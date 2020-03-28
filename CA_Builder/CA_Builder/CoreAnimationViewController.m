@@ -35,7 +35,6 @@
             [self createContentsByCoreGraphics];
         break;
         case 6:
-            [self changeLayerSequenceByZ];
         break;
         default:
             break;
@@ -167,29 +166,5 @@
     CGContextStrokeEllipseInRect(ctx, layer.bounds);
 }
 
-/*
- *使用Z坐标轴改变图层的显示顺序
- *警告：改变的是显示顺序不是图层树的顺序
- */
-- (void)changeLayerSequenceByZ{
-    CALayer *blueLayer1 = [CALayer layer];
-    blueLayer1.frame = CGRectMake(50, 50, 100, 100);
-    blueLayer1.backgroundColor = [UIColor blueColor].CGColor;
-    [self.view.layer addSublayer:blueLayer1];
-    CALayer *redLayer1 = [CALayer layer];
-    redLayer1.frame = CGRectMake(100, 100, 100, 100);
-    redLayer1.backgroundColor = [UIColor redColor].CGColor;
-    [self.view.layer addSublayer:redLayer1];
-    
-    CALayer *blueLayer2 = [CALayer layer];
-    blueLayer2.frame = CGRectMake(50, 300, 100, 100);
-    blueLayer2.backgroundColor = [UIColor blueColor].CGColor;
-    //Z坐标轴可以改变图层显示顺序
-    blueLayer2.zPosition = 1;
-    [self.view.layer addSublayer:blueLayer2];
-    CALayer *redLayer2 = [CALayer layer];
-    redLayer2.frame = CGRectMake(100, 350, 100, 100);
-    redLayer2.backgroundColor = [UIColor redColor].CGColor;
-    [self.view.layer addSublayer:redLayer2];
-}
+
 @end

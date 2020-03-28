@@ -25,6 +25,7 @@
 		84516B08242E414C00A52136 /* ClockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B06242E414C00A52136 /* ClockViewController.m */; };
 		84516B09242E414C00A52136 /* ClockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84516B07242E414C00A52136 /* ClockViewController.xib */; };
 		84516B0B242E499D00A52136 /* biaopan.png in Resources */ = {isa = PBXBuildFile; fileRef = 84516B0A242E499D00A52136 /* biaopan.png */; };
+		84516B0E242EE00D00A52136 /* LayerChangeZTouchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B0D242EE00D00A52136 /* LayerChangeZTouchViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,8 @@
 		84516B06242E414C00A52136 /* ClockViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClockViewController.m; sourceTree = "<group>"; };
 		84516B07242E414C00A52136 /* ClockViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClockViewController.xib; sourceTree = "<group>"; };
 		84516B0A242E499D00A52136 /* biaopan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biaopan.png; sourceTree = "<group>"; };
+		84516B0C242EE00D00A52136 /* LayerChangeZTouchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayerChangeZTouchViewController.h; sourceTree = "<group>"; };
+		84516B0D242EE00D00A52136 /* LayerChangeZTouchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayerChangeZTouchViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +145,8 @@
 				84516B05242E414C00A52136 /* ClockViewController.h */,
 				84516B06242E414C00A52136 /* ClockViewController.m */,
 				84516B07242E414C00A52136 /* ClockViewController.xib */,
+				84516B0C242EE00D00A52136 /* LayerChangeZTouchViewController.h */,
+				84516B0D242EE00D00A52136 /* LayerChangeZTouchViewController.m */,
 			);
 			path = CA_Builder;
 			sourceTree = "<group>";
@@ -314,6 +319,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84516AC8242E2BF700A52136 /* ViewController.m in Sources */,
+				84516B0E242EE00D00A52136 /* LayerChangeZTouchViewController.m in Sources */,
 				84516AC2242E2BF700A52136 /* AppDelegate.m in Sources */,
 				84516AF8242E2C3000A52136 /* CoreAnimationViewController.m in Sources */,
 				84516B08242E414C00A52136 /* ClockViewController.m in Sources */,
