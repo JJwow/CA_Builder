@@ -34,7 +34,8 @@
         case 4:
             [self createContentsByCoreGraphics];
         break;
-        case 6:
+        case 7:
+            [self setCornerRadius];
         break;
         default:
             break;
@@ -164,6 +165,27 @@
     CGContextSetLineWidth(ctx, 10.0f);
     CGContextSetStrokeColorWithColor(ctx, [UIColor redColor].CGColor);
     CGContextStrokeEllipseInRect(ctx, layer.bounds);
+}
+
+/*
+ *圆角、边框
+ *边框并不会把寄宿图或子图层的形状计算进来，如果图层的子图层超过了边界，或者是寄宿图在透明区域有一个透明蒙板，边框仍然会沿着图层的边界绘制出来
+ */
+- (void)setCornerRadius{
+    CALayer *blueLayer = [CALayer layer];
+    blueLayer.frame = CGRectMake(50, 50, 100, 100);
+    blueLayer.backgroundColor = [UIColor blueColor].CGColor;
+    blueLayer.contents = (__bridge id)[UIImage imageNamed:@"team.png"].CGImage;
+    blueLayer.contentsGravity = kCAGravityCenter;
+    blueLayer.cornerRadius = 20;
+//    blueLayer.masksToBounds = YES;
+    blueLayer.borderWidth = 5;
+    blueLayer.borderColor = [UIColor yellowColor].CGColor;
+    [self.view.layer addSublayer:blueLayer];
+    CALayer *redLayer = [CALayer layer];
+    redLayer.frame = CGRectMake(50, 50, 100, 100);
+    redLayer.backgroundColor = [UIColor redColor].CGColor;
+    [blueLayer addSublayer:redLayer];
 }
 
 
