@@ -36,7 +36,9 @@
            @"组透明",
            @"仿射变换",
            @"3D变换",
-           @"同一个layer下多子layer进行3D变换"];
+           @"同一个layer下多子layer进行3D变换",
+           @"扁平化图层",
+           @"固体对象"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }

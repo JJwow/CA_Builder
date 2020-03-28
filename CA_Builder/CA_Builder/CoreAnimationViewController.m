@@ -57,6 +57,12 @@
         case 15:
             [self transform3DWithAnchorPoint];
         break;
+        case 16:
+            [self transform3DInSuperLayerAndSubLayer];
+        break;
+        case 17:
+            [self transform3DInSolid];
+        break;
         default:
             break;
     }
@@ -408,7 +414,13 @@
     CALayer *layer1 = [CALayer layer];
     layer1.contents = (__bridge id)img.CGImage;
     layer1.frame = CGRectMake(50, 50, 100, 100);
-    CATransform3D transform1 = CATransform3DMakeRotation(M_PI_4, 0, 1, 0);
+    /*
+     *doubleSided控制图层的背面是否要被绘制。这是一个BOOL类型，默认为YES，如果设置为NO，那么当图层正面从相机视角消失的时候，它将不会被绘制。
+     *z旋转180度时可以观察layer的背面
+     */
+//    layer1.doubleSided = NO;
+    
+    CATransform3D transform1 = CATransform3DMakeRotation(M_PI, 0, 1, 0);
     layer1.transform = transform1;
     [self.view.layer addSublayer:layer1];
     CALayer *layer2= [CALayer layer];
@@ -418,4 +430,77 @@
     layer2.transform = transform2;
     [self.view.layer addSublayer:layer2];
 }
+
+/*
+ *扁平化图层
+ *对包含已经做过变换的图层的图层做反方向的变换
+ *子Layer的3D变换都是在父Layer的平面中
+ *只有改变Z坐标轴时，两次改变才能抵消，因为Z轴是正面我们观察视角
+ *当我们设置了m34视角穿透后，由于平面和观察视角为非垂直，所以视觉上子layer没有被修正
+ */
+
+- (void)transform3DInSuperLayerAndSubLayer{
+    CALayer *supLayer = [CALayer layer];
+    supLayer.frame = CGRectMake(50, 50, 100, 100);
+    supLayer.backgroundColor = [UIColor greenColor].CGColor;
+    [self.view.layer addSublayer:supLayer];
+    CALayer *subLayer = [CALayer layer];
+    subLayer.frame = CGRectMake(25, 25, 50, 50);
+    subLayer.backgroundColor = [UIColor redColor].CGColor;
+    [supLayer addSublayer:subLayer];
+    CATransform3D transform1 = CATransform3DIdentity;
+    transform1.m34 = -1.0/500.0;
+    transform1 = CATransform3DRotate(transform1, M_PI_4, 0, 0, 1);
+    CATransform3D transform2 = CATransform3DIdentity;
+    transform2.m34 = -1.0/500.0;
+    transform2 = CATransform3DRotate(transform2, -M_PI_4, 0, 0, 1);
+    supLayer.transform = transform1;
+    subLayer.transform = transform2;
+}
+
+/*
+ *x建立一个六面体
+ */
+- (void)transform3DInSolid{
+    CATransform3D perspective = CATransform3DIdentity;
+    //透视的程度
+    perspective.m34 = -1.0/500.0;
+    //相机调度、或者子layer共享的3D变换角度
+    perspective = CATransform3DRotate(perspective, -M_PI_4, 1, 0, 0);
+    perspective = CATransform3DRotate(perspective, -M_PI_4, 0, 1, 0);
+    //使子layert共享透视角度
+    self.view.layer.sublayerTransform = perspective;
+    //Z轴增加50
+    CATransform3D transform = CATransform3DMakeTranslation(0, 0, 50);
+    [self configLayer:0 transform:transform];
+    //X轴增加50，并沿着Y轴旋转90度
+    transform = CATransform3DMakeTranslation(50, 0, 0);
+    transform = CATransform3DRotate(transform, M_PI_2, 0, 1, 0);
+    [self configLayer:1 transform:transform];
+    //Y轴减少50，并沿着X轴旋转90度
+    transform = CATransform3DMakeTranslation(0, -50, 0);
+    transform = CATransform3DRotate(transform, M_PI_2, 1, 0, 0);
+    [self configLayer:2 transform:transform];
+    //Y轴增加50，并沿着X轴反向旋转90度
+    transform = CATransform3DMakeTranslation(0, 50, 0);
+    transform = CATransform3DRotate(transform, -M_PI_2, 1, 0, 0);
+    [self configLayer:3 transform:transform];
+    //X轴减少50，并沿着Y轴反向旋转90度
+    transform = CATransform3DMakeTranslation(-50, 0, 0);
+    transform = CATransform3DRotate(transform, -M_PI_2, 0, 1, 0);
+    [self configLayer:4 transform:transform];
+    //Z轴减少50，并沿着Y轴旋转90度
+    transform = CATransform3DMakeTranslation(0, 0, -50);
+    transform = CATransform3DRotate(transform, M_PI, 0, 1, 0);
+    [self configLayer:5 transform:transform];
+}
+- (void)configLayer:(NSInteger)index transform:(CATransform3D)transform{
+    CALayer *layer1 = [CALayer layer];
+    layer1.frame = CGRectMake(100, 100, 100, 100);
+    UIImage *img = [UIImage imageNamed:@"team.png"];
+    layer1.contents = (__bridge id)img.CGImage;
+    [self.view.layer addSublayer:layer1];
+    layer1.transform = transform;
+}
+
 @end
