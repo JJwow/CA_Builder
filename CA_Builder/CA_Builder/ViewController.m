@@ -38,7 +38,9 @@
            @"3D变换",
            @"同一个layer下多子layer进行3D变换",
            @"扁平化图层",
-           @"固体对象"];
+           @"固体对象",
+           @"使用CAShapeLayer画一个火柴人",
+           @"自定义圆角"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }

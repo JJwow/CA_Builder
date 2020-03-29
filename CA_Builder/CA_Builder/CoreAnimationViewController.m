@@ -68,6 +68,12 @@
         case 17:
             [self transform3DInSolid];
         break;
+        case 18:
+            [self setCAShapeLayer];
+        break;
+        case 19:
+            [self setCustomCornerRadii];
+        break;
         default:
             break;
     }
@@ -534,6 +540,7 @@
     return layer;
 }
 
+
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     /*
      *判断d响应事件的对象
@@ -545,4 +552,49 @@
     }
 }
 
+/*
+ *使用CAShapeLayer绘制一个火柴人
+ *CAShapeLayer优点：
+ *渲染快速。CAShapeLayer使用了硬件加速，绘制同一图形会比用Core Graphics快很多
+ *高效使用内存。一个CAShapeLayer不需要像普通CALayer一样创建一个寄宿图形，所以无论有多大，都不会占用太多的内存
+ *不会被图层边界剪裁掉。一个CAShapeLayer可以在边界之外绘制。你的图层路径不会像在使用Core Graphics的普通CALayer一样被剪裁掉
+ *不会出现像素化。当你给CAShapeLayer做3D变换时，它不像一个有寄宿图的普通图层一样变得像素化
+ */
+- (void)setCAShapeLayer{
+    UIBezierPath *path = [[UIBezierPath alloc]init];
+    [path moveToPoint:CGPointMake(175, 100)];
+    [path addArcWithCenter:CGPointMake(150, 100) radius:25 startAngle:0 endAngle:2*M_PI clockwise:YES];
+    [path moveToPoint:CGPointMake(150, 125)];
+    [path addLineToPoint:CGPointMake(150, 175)];
+    [path addLineToPoint:CGPointMake(125, 225)];
+    [path moveToPoint:CGPointMake(150, 175)];
+    [path addLineToPoint:CGPointMake(175, 225)];
+    [path moveToPoint:CGPointMake(100, 150)];
+    [path addLineToPoint:CGPointMake(200, 150)];
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.strokeColor = [UIColor redColor].CGColor;
+    shapeLayer.fillColor = [UIColor whiteColor].CGColor;
+    shapeLayer.lineWidth = 5;
+    shapeLayer.lineCap = kCALineCapRound;
+    shapeLayer.lineJoin = kCALineJoinRound;
+    shapeLayer.path = path.CGPath;
+    [self.view.layer addSublayer:shapeLayer];
+}
+
+/*
+ *为layer自定义绘制四个圆角
+ */
+- (void)setCustomCornerRadii{
+    CALayer *layer = [CALayer layer];
+    layer.frame = CGRectMake(100, 100, 100, 100);
+    UIImage *img = [UIImage imageNamed:@"team.png"];
+    layer.contents = (__bridge id)img.CGImage;
+    [self.view.layer addSublayer:layer];
+    UIRectCorner corners = UIRectCornerTopLeft|UIRectCornerTopRight;
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:layer.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(20, 20)];
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.path = path.CGPath;
+    layer.mask = shapeLayer;
+    
+}
 @end
